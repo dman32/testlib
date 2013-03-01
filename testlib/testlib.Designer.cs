@@ -30,33 +30,34 @@
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.txtConfiguration = new System.Windows.Forms.TextBox();
+            this.button6 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.button3 = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.button7 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
             this.txtAccess = new System.Windows.Forms.TextBox();
-            this.button7 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.button8 = new System.Windows.Forms.Button();
-            this.button9 = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.pnlClient = new System.Windows.Forms.Panel();
             this.button10 = new System.Windows.Forms.Button();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.pnlServer = new System.Windows.Forms.Panel();
+            this.button9 = new System.Windows.Forms.Button();
+            this.button11 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
-            this.groupBox7.SuspendLayout();
             this.groupBox6.SuspendLayout();
+            this.groupBox7.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -78,6 +79,16 @@
             this.txtConfiguration.Name = "txtConfiguration";
             this.txtConfiguration.Size = new System.Drawing.Size(307, 82);
             this.txtConfiguration.TabIndex = 1;
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(6, 48);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(75, 23);
+            this.button6.TabIndex = 0;
+            this.button6.Text = "Read";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // button2
             // 
@@ -134,6 +145,16 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Logging";
             // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(26, 46);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(118, 23);
+            this.button7.TabIndex = 0;
+            this.button7.Text = "Open";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
+            // 
             // button4
             // 
             this.button4.Location = new System.Drawing.Point(26, 17);
@@ -156,15 +177,13 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Access";
             // 
-            // button1
+            // txtAccess
             // 
-            this.button1.Location = new System.Drawing.Point(6, 19);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Write";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.txtAccess.Location = new System.Drawing.Point(87, 12);
+            this.txtAccess.Multiline = true;
+            this.txtAccess.Name = "txtAccess";
+            this.txtAccess.Size = new System.Drawing.Size(307, 82);
+            this.txtAccess.TabIndex = 1;
             // 
             // button5
             // 
@@ -176,36 +195,19 @@
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
-            // button6
+            // button1
             // 
-            this.button6.Location = new System.Drawing.Point(6, 48);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(75, 23);
-            this.button6.TabIndex = 0;
-            this.button6.Text = "Read";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
-            // 
-            // txtAccess
-            // 
-            this.txtAccess.Location = new System.Drawing.Point(87, 12);
-            this.txtAccess.Multiline = true;
-            this.txtAccess.Name = "txtAccess";
-            this.txtAccess.Size = new System.Drawing.Size(307, 82);
-            this.txtAccess.TabIndex = 1;
-            // 
-            // button7
-            // 
-            this.button7.Location = new System.Drawing.Point(26, 46);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(118, 23);
-            this.button7.TabIndex = 0;
-            this.button7.Text = "Open";
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
+            this.button1.Location = new System.Drawing.Point(6, 19);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 0;
+            this.button1.Text = "Write";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // groupBox5
             // 
+            this.groupBox5.Controls.Add(this.button11);
             this.groupBox5.Controls.Add(this.button8);
             this.groupBox5.Controls.Add(this.groupBox6);
             this.groupBox5.Controls.Add(this.groupBox7);
@@ -216,17 +218,6 @@
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "TCP Communication";
             // 
-            // groupBox7
-            // 
-            this.groupBox7.Controls.Add(this.panel1);
-            this.groupBox7.Controls.Add(this.button9);
-            this.groupBox7.Location = new System.Drawing.Point(6, 48);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(170, 76);
-            this.groupBox7.TabIndex = 4;
-            this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "TCP Server";
-            // 
             // button8
             // 
             this.button8.Location = new System.Drawing.Point(6, 19);
@@ -235,26 +226,11 @@
             this.button8.TabIndex = 5;
             this.button8.Text = "Connect";
             this.button8.UseVisualStyleBackColor = true;
-            // 
-            // button9
-            // 
-            this.button9.Location = new System.Drawing.Point(6, 19);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(75, 23);
-            this.button9.TabIndex = 0;
-            this.button9.Text = "Send";
-            this.button9.UseVisualStyleBackColor = true;
-            // 
-            // panel1
-            // 
-            this.panel1.Location = new System.Drawing.Point(87, 13);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(68, 51);
-            this.panel1.TabIndex = 1;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
             // groupBox6
             // 
-            this.groupBox6.Controls.Add(this.panel2);
+            this.groupBox6.Controls.Add(this.pnlClient);
             this.groupBox6.Controls.Add(this.button10);
             this.groupBox6.Location = new System.Drawing.Point(193, 48);
             this.groupBox6.Name = "groupBox6";
@@ -263,12 +239,12 @@
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "TCP Server";
             // 
-            // panel2
+            // pnlClient
             // 
-            this.panel2.Location = new System.Drawing.Point(87, 13);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(68, 51);
-            this.panel2.TabIndex = 1;
+            this.pnlClient.Location = new System.Drawing.Point(87, 13);
+            this.pnlClient.Name = "pnlClient";
+            this.pnlClient.Size = new System.Drawing.Size(68, 51);
+            this.pnlClient.TabIndex = 1;
             // 
             // button10
             // 
@@ -278,6 +254,45 @@
             this.button10.TabIndex = 0;
             this.button10.Text = "Send";
             this.button10.UseVisualStyleBackColor = true;
+            this.button10.Click += new System.EventHandler(this.button10_Click);
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.pnlServer);
+            this.groupBox7.Controls.Add(this.button9);
+            this.groupBox7.Location = new System.Drawing.Point(6, 48);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(170, 76);
+            this.groupBox7.TabIndex = 4;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "TCP Server";
+            // 
+            // pnlServer
+            // 
+            this.pnlServer.Location = new System.Drawing.Point(87, 13);
+            this.pnlServer.Name = "pnlServer";
+            this.pnlServer.Size = new System.Drawing.Size(68, 51);
+            this.pnlServer.TabIndex = 1;
+            // 
+            // button9
+            // 
+            this.button9.Location = new System.Drawing.Point(6, 19);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(75, 23);
+            this.button9.TabIndex = 0;
+            this.button9.Text = "Send";
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
+            // 
+            // button11
+            // 
+            this.button11.Location = new System.Drawing.Point(199, 19);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(75, 23);
+            this.button11.TabIndex = 5;
+            this.button11.Text = "Connect";
+            this.button11.UseVisualStyleBackColor = true;
+            this.button11.Click += new System.EventHandler(this.button11_Click);
             // 
             // testlib
             // 
@@ -298,8 +313,8 @@
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.groupBox5.ResumeLayout(false);
-            this.groupBox7.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
+            this.groupBox7.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -324,9 +339,10 @@
         private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.GroupBox groupBox6;
-        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel pnlClient;
         private System.Windows.Forms.Button button10;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel pnlServer;
         private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.Button button11;
     }
 }

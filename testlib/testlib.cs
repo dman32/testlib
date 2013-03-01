@@ -12,15 +12,57 @@ namespace testlib
     public partial class testlib : Form
     {
         public const int byteSize = 1024;
-        public const string server = "testserver", client = "testclient";
+        public const string server = "testserver", client = "testclient", ipaddress = "10.0.64.211";
+        public const string logfile = "log.txt", cfgfile = "testlib.xml", dbfile = "test.accdb";
+        public System.Timers.Timer tmrUpdate = new System.Timers.Timer(), tmrBlipServer = new System.Timers.Timer(), tmrBlipClient = new System.Timers.Timer();
         public testlib()
         {
             InitializeComponent();
-            SEALib.Configuration.Init("testlib.xml");
-            SEALib.Logging.Init("log.txt");
-            SEALib.Database.OLEDB.Init("test.accdb");
-            SEALib.TCP.addSocket(server, System.Net.IPAddress.Any, 2055);
-            SEALib.TCP.addSocket(client, System.Net.IPAddress.Parse("10.0.64.211"), 2055);
+            SEALib.Configuration.Init(cfgfile);
+            SEALib.Logging.Init(logfile);
+            SEALib.Database.OLEDB.Init(dbfile);
+            SEALib.TCP.addServer(server, 2055, onAccept, onDisconnect, onReceive, byteSize);
+            SEALib.TCP.addClient(client, System.Net.IPAddress.Parse(ipaddress), 2055, onAccept, onDisconnect, onReceive, byteSize);
+            tmrUpdate.Interval = 200;
+            tmrUpdate.Elapsed += new System.Timers.ElapsedEventHandler(tmrUpdate_Tick);
+            tmrUpdate.Start();
+            tmrBlipServer.Interval = 500;
+            tmrBlipServer.AutoReset = false;
+            tmrBlipServer.Elapsed += new System.Timers.ElapsedEventHandler(tmrBlipServer_Tick);
+            tmrBlipClient.Interval = 500;
+            tmrBlipClient.AutoReset = false;
+            tmrBlipClient.Elapsed += new System.Timers.ElapsedEventHandler(tmrBlipClient_Tick);
+        }
+
+        void tmrUpdate_Tick(object sender, EventArgs e)
+        {
+            if (SEALib.TCP.isConnected(server))
+            {
+                if (pnlServer.BackColor != Color.GreenYellow && pnlServer.BackColor != Color.Green && pnlServer.BackColor != Color.Yellow)
+                    updatePnl(pnlServer, Color.Green);
+            }
+            else if (SEALib.TCP.isListening(server))
+                updatePnl(pnlServer, Color.Blue);
+            else
+                updatePnl(pnlServer, Color.Red);
+
+            if (SEALib.TCP.isConnected(client))
+            {
+                if (pnlClient.BackColor != Color.GreenYellow && pnlClient.BackColor != Color.Green && pnlClient.BackColor != Color.Yellow)
+                    updatePnl(pnlClient, Color.Green);
+            }
+            else if (SEALib.TCP.isListening(client))
+                updatePnl(pnlClient, Color.Blue);
+            else
+                updatePnl(pnlClient, Color.Red);
+        }
+        void tmrBlipServer_Tick(object sender, EventArgs e)
+        {
+            updatePnl(pnlServer, Color.Green);
+        }
+        void tmrBlipClient_Tick(object sender, EventArgs e)
+        {
+            updatePnl(pnlClient, Color.Green);
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -69,45 +111,22 @@ namespace testlib
             System.Diagnostics.Process.Start("notepad.exe", "log.txt");
         }
 
-        private void button8_Click(object sender, EventArgs e)
-        {
-            if (SEALib.TCP.isConnected(server))
-                SEALib.TCP.disconnect(server);
-            else
-            {
-                SEALib.TCP.startListening(server, onAccept, onDisconnect, onReceive, byteSize);
-                updateTxt(txtServer, "listening", true);
-            }
-        }
 
         private void onAccept(string name)
         {
             switch (name)
             {
                 case server:
-                    updateTxt(btnServer, "Disconnect", false);
-                    updateTxt(txtServer, "+", true);
                     break;
                 case client:
-                    updateTxt(btnClient, "Disconnect", false);
-                    updateTxt(txtClient, "+", true);
                     break;
             }
         }
 
         private void onDisconnect(string name)
         {
-            switch (name)
-            {
-                case server:
-                    updateTxt(btnServer, "Listen", false);
-                    updateTxt(txtServer, "-", true);
-                    break;
-                case client:
-                    updateTxt(btnClient, "Connect", false);
-                    updateTxt(txtClient, "-", true);
-                    break;
-            }
+            SEALib.ErrorMessages.ThrowError(name + " disconnected", "message", SEALib.ErrorMessages.Level.warning, null, null);
+
         }
 
         private void onReceive(string name, byte[] bytes, int bytesRec)
@@ -115,10 +134,12 @@ namespace testlib
             switch (name)
             {
                 case server:
-                    updateTxt(txtServer, "R", true);
+                    updatePnl(pnlServer, Color.GreenYellow);
+                    tmrBlipServer.Start();
                     break;
                 case client:
-                    updateTxt(txtClient, "R", true);
+                    updatePnl(pnlClient, Color.GreenYellow);
+                    tmrBlipClient.Start();
                     break;
             }
         }
@@ -141,25 +162,12 @@ namespace testlib
             catch { }
         }
 
-        private void button9_Click(object sender, EventArgs e)
+        private void updatePnl(Panel p, Color c)
         {
-            if (SEALib.TCP.isConnected(client))
-                SEALib.TCP.disconnect(client);
+            if (p.InvokeRequired)
+                p.Invoke(new MethodInvoker(delegate { p.BackColor = c; }));
             else
-            {
-                SEALib.TCP.startConnecting(client, onAccept, onDisconnect, onReceive, byteSize);
-                updateTxt(txtClient, "connecting", true);
-            }
-        }
-
-        private void button10_Click(object sender, EventArgs e)
-        {
-            SEALib.TCP.startSend(server, onSend, Encoding.UTF8.GetBytes("test"));
-        }
-
-        private void button11_Click(object sender, EventArgs e)
-        {
-            SEALib.TCP.startSend(client, onSend, Encoding.UTF8.GetBytes("test"));
+                p.BackColor = c;
         }
 
         private void onSend(string name)
@@ -167,12 +175,40 @@ namespace testlib
             switch (name)
             {
                 case server:
-                    updateTxt(txtServer, "S", true);
+                    updatePnl(pnlServer, Color.Yellow);
+                    tmrBlipServer.Start();
                     break;
                 case client:
-                    updateTxt(txtClient, "S", true);
+                    updatePnl(pnlClient, Color.Yellow);
+                    tmrBlipClient.Start();
                     break;
             }
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            if (SEALib.TCP.isConnected(client))
+                SEALib.TCP.disconnect(server);
+            else
+                SEALib.TCP.startListening(server);
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            SEALib.TCP.startSend(server, onSend, Encoding.UTF8.GetBytes(DateTime.Now.ToShortTimeString()));
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            SEALib.TCP.startSend(client, onSend, Encoding.UTF8.GetBytes(DateTime.Now.ToShortTimeString()));
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            if (SEALib.TCP.isConnected(client))
+                SEALib.TCP.disconnect(client);
+            else
+                SEALib.TCP.startConnecting(client);
         }
     }
 }
