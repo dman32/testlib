@@ -55,6 +55,9 @@ namespace testlib
                 updatePnl(pnlClient, Color.Blue);
             else
                 updatePnl(pnlClient, Color.Red);
+            enableControl(button11,SEALib.TCP.isListening(server) || SEALib.TCP.isConnected(client));
+            enableControl(button9, SEALib.TCP.isConnected(server));
+            enableControl(button10, SEALib.TCP.isConnected(client));
         }
         void tmrBlipServer_Tick(object sender, EventArgs e)
         {
@@ -170,6 +173,15 @@ namespace testlib
                 p.BackColor = c;
         }
 
+        private void enableControl(Control c, bool enable)
+        {
+            if (c.InvokeRequired)
+            {
+                c.Invoke(new MethodInvoker(delegate { c.Enabled = enable; }));
+            }else
+                c.Enabled = enable;
+        }
+
         private void onSend(string name)
         {
             switch (name)
@@ -195,12 +207,14 @@ namespace testlib
 
         private void button9_Click(object sender, EventArgs e)
         {
-            SEALib.TCP.startSend(server, onSend, Encoding.UTF8.GetBytes(DateTime.Now.ToShortTimeString()));
+            if (SEALib.TCP.isConnected(server))
+                SEALib.TCP.startSend(server, onSend, Encoding.UTF8.GetBytes(DateTime.Now.ToShortTimeString()));
         }
 
         private void button10_Click(object sender, EventArgs e)
         {
-            SEALib.TCP.startSend(client, onSend, Encoding.UTF8.GetBytes(DateTime.Now.ToShortTimeString()));
+            if (SEALib.TCP.isConnected(client))
+                SEALib.TCP.startSend(client, onSend, Encoding.UTF8.GetBytes(DateTime.Now.ToShortTimeString()));
         }
 
         private void button11_Click(object sender, EventArgs e)
@@ -208,7 +222,8 @@ namespace testlib
             if (SEALib.TCP.isConnected(client))
                 SEALib.TCP.disconnect(client);
             else
-                SEALib.TCP.startConnecting(client);
+                if (SEALib.TCP.isListening(server))
+                    SEALib.TCP.startConnecting(client);
         }
     }
 }
